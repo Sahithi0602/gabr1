@@ -1,8 +1,11 @@
 name: project2
-on: push
+on: 
+  push:
+     branches:
+       - "dev-*"
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: get code
         uses: actions/checkout@v3
