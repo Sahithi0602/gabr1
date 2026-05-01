@@ -22,7 +22,6 @@ jobs  :
  
   TEST  : 
     runs-on  :  ubuntu-latest
-    needs: build
     steps  : 
       - name  :  get code
         uses  :  actions/checkout@v6
