@@ -1,6 +1,8 @@
 name  :  NodeJs
 on  :  
  push: 
+  paths: 
+    - "./src/**"
   branches: [master]
  pull_request: 
   branches: [master]
