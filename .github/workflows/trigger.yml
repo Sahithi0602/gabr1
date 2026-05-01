@@ -2,7 +2,7 @@ name  :  NodeJs-trigger
 on  :  
  push: 
   paths: 
-    - "./src/**"
+    - "src/**"
   branches: [master]
 jobs  : 
   build  : 
