@@ -1,67 +1,101 @@
-name  :  NodeJs paralleljobs
-on  :  push
-jobs  : 
-  build  : 
-    runs-on  :  ubuntu-latest
-    steps  : 
-      - name  :  get code
-        uses  :  actions/checkout@v6
-      - name  :  Set up nodejs
-        uses  :  actions/setup-node@v6
-        with  : 
-          node-version  :  18
-      - name  :  Install dependencies
-        run  :  npm install
-      - name  :  Run tests
-        run  :  npm test
-      - name  :  Build
-        run  :  npm run build
-      - name  :  Deploy
-        run  :  echo "Deploying to build server..."
-        
- 
-  TEST  : 
-    runs-on  :  ubuntu-latest
-    steps  : 
-      - name  :  get code
-        uses  :  actions/checkout@v6
-      - name  :  Set up nodejs
-        uses  :  actions/setup-node@v6
-        with  : 
-          node-version  :  18
-      - name: cache Dependencies
-        uses: actions/cache@v3
+name: NodeJs paralleljobs
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Set up Nodejs
+        uses: actions/setup-node@v4
         with:
-           path: ~/.npm
-           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}    
-      - name  :  Install dependencies
-        run  :  npm install
-      - name  :  Run tests
-        run  :  npm test
-      - name  :  Build
-        run  :  npm run build
-      - name  :  Deploy
-        run  :  echo "Deploying to TEST server..."
-  
-  DEPLOY  : 
-    runs-on  :  ubuntu-latest
-    steps  : 
-      - name  :  get code
-        uses  :  actions/checkout@v6
-      - name  :  Set up nodejs
-        uses  :  actions/setup-node@v6
-        with  : 
-          node-version  :  18
-      - name: cache Dependencies
-        uses: actions/cache@v3
+          node-version: 18
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
         with:
-           path: ~/.npm
-           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}      
-      - name  :  Install dependencies
-        run  :  npm install
-      - name  :  Run tests
-        run  :  npm test
-      - name  :  Build
-        run  :  npm run build
-      - name  :  Deploy
-        run  :  echo "Deploying to TEST server..."
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to Build Server
+        run: echo "Deploying to BUILD server..."
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Set up Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to Test Server
+        run: echo "Deploying to TEST server..."
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+
+      - name: Set up Nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to Production Server
+        run: echo "Deploying to PRODUCTION server..."
